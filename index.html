@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desinformación en la Cartografía del Gerrymandering: Una Crítica desde el Conocimiento Situado y el Data Feminism</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:        #1a1714;
+      --ink-light:  #4a443e;
+      --ink-faint:  #9a928a;
+      --paper:      #f5f2ec;
+      --rule:       #d8d0c5;
+      --accent:     #8b1c1c;
+      --accent-dim: #b94444;
+      --mono:       'DM Mono', monospace;
+      --serif:      'EB Garamond', Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER / MASTHEAD ───────────────────────────────────── */
+    .masthead {
+      border-bottom: 1px solid var(--rule);
+      padding: 1.4rem 0;
+      position: sticky;
+      top: 0;
+      background: var(--paper);
+      z-index: 100;
+      backdrop-filter: blur(4px);
+    }
+    .masthead-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .journal-name {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+    .journal-meta {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-align: right;
+    }
+
+    /* ── LAYOUT ──────────────────────────────────────────────── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section { padding: 2.8rem 0; }
+    section + section { border-top: 1px solid var(--rule); }
+
+    /* ── ARTICLE HEADER ──────────────────────────────────────── */
+    .article-header { padding-top: 4rem; padding-bottom: 3rem; }
+
+    .article-type {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .article-type::before {
+      content: '';
+      display: inline-block;
+      width: 2rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.4rem;
+      color: var(--ink);
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-bottom: 2.5rem;
+      max-width: 660px;
+    }
+
+    /* ── AUTHORS ─────────────────────────────────────────────── */
+    .authors-block { margin-bottom: 2rem; }
+
+    .authors-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.6rem;
+    }
+
+    .authors-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.8rem;
+    }
+    .authors-list li {
+      font-size: 1rem;
+      color: var(--ink);
+    }
+    .authors-list li a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .authors-list li a:hover { color: var(--accent); border-color: var(--accent-dim); }
+    .author-sup {
+      font-size: 0.65em;
+      vertical-align: super;
+      font-family: var(--mono);
+      color: var(--accent);
+      margin-left: 1px;
+    }
+
+    /* affiliations */
+    .affiliations {
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      color: var(--ink-light);
+      line-height: 1.6;
+    }
+    .affiliations p { margin-bottom: 0.2rem; }
+    .aff-num {
+      font-family: var(--mono);
+      color: var(--accent);
+      margin-right: 0.4rem;
+      font-size: 0.72em;
+    }
+
+    /* ── META BADGES ─────────────────────────────────────────── */
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.4rem;
+      padding: 1.2rem 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      margin-top: 1.8rem;
+    }
+    .meta-item {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .meta-item span {
+      color: var(--ink-light);
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 0.78rem;
+    }
+
+    /* ── SECTION HEADINGS ────────────────────────────────────── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    /* ── ABSTRACT ────────────────────────────────────────────── */
+    .abstract-box {
+      background: rgba(139, 28, 28, 0.04);
+      border-left: 2px solid var(--accent);
+      padding: 1.6rem 2rem;
+      margin-top: 0.4rem;
+    }
+    .abstract-box p {
+      font-size: 1rem;
+      color: var(--ink-light);
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    /* ── KEYWORDS ────────────────────────────────────────────── */
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.8rem;
+    }
+    .keyword {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--rule);
+      color: var(--ink-light);
+      background: transparent;
+      transition: border-color 0.2s, color 0.2s;
+      cursor: default;
+    }
+    .keyword:hover { border-color: var(--accent-dim); color: var(--accent); }
+
+    /* ── BODY TEXT ───────────────────────────────────────────── */
+    .body-text p {
+      text-align: justify;
+      hyphens: auto;
+      margin-bottom: 1.1rem;
+      color: var(--ink);
+    }
+    .body-text p:last-child { margin-bottom: 0; }
+
+    /* ── FIGURES ─────────────────────────────────────────────── */
+    figure {
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .fig-placeholder {
+      width: 100%;
+      height: 220px;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--rule) 0px,
+        var(--rule) 1px,
+        transparent 1px,
+        transparent 10px
+      );
+      border: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+    }
+    figcaption {
+      font-size: 0.82rem;
+      color: var(--ink-faint);
+      margin-top: 0.6rem;
+      font-style: italic;
+      text-align: left;
+    }
+    figcaption strong {
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-light);
+    }
+
+    /* ── TABLE ───────────────────────────────────────────────── */
+    .table-wrapper { overflow-x: auto; margin: 1.5rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    thead tr {
+      border-bottom: 2px solid var(--ink);
+    }
+    thead th {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+    }
+    tbody tr { border-bottom: 1px solid var(--rule); }
+    tbody td { padding: 0.6rem 0.8rem; color: var(--ink); }
+    .table-caption {
+      font-size: 0.82rem;
+      color: var(--ink-faint);
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+
+    /* ── REFERENCES ──────────────────────────────────────────── */
+    .references-list {
+      list-style: none;
+      counter-reset: none;
+    }
+    .references-list li {
+      display: block;
+      padding-left: 2.2rem;
+      text-indent: -2.2rem;
+      margin-bottom: 0.9rem;
+      font-size: 0.88rem;
+      color: var(--ink-light);
+      line-height: 1.55;
+      white-space: normal;
+    }
+    .references-list li a {
+      color: var(--accent-dim);
+      text-decoration: none;
+    }
+    .references-list li a:hover { text-decoration: underline; }
+
+    /* ── CORRESPONDENCE ──────────────────────────────────────── */
+    .correspondence {
+      background: transparent;
+      border: 1px solid var(--rule);
+      padding: 1.2rem 1.6rem;
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      margin-top: 1.4rem;
+    }
+    .correspondence strong {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    /* ── CONFLICT / FUNDING ──────────────────────────────────── */
+    .disclosure p {
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      margin-bottom: 0.5rem;
+    }
+    .disclosure p strong {
+      color: var(--ink-light);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 0 3rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    footer a { color: inherit; text-decoration: none; }
+
+    /* ── ANIMATIONS ──────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .article-header > * {
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+    .article-header > *:nth-child(1) { animation-delay: 0.05s; }
+    .article-header > *:nth-child(2) { animation-delay: 0.15s; }
+    .article-header > *:nth-child(3) { animation-delay: 0.25s; }
+    .article-header > *:nth-child(4) { animation-delay: 0.35s; }
+    .article-header > *:nth-child(5) { animation-delay: 0.45s; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .container { padding: 0 1.2rem; }
+      .abstract-box { padding: 1.2rem 1.2rem; }
+      h1 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="journal-name">Revista de Diseño y Visualización de Información</div>
+    <div class="journal-meta">Vol. 0 · Núm. 0 · 2026</div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="container">
+
+  <!-- ── ENCABEZADO DEL ARTÍCULO ─────────────────────────────── -->
+  <section id="encabezado" class="article-header">
+
+    <div class="article-type">Artículo de Investigación Original</div>
+
+    <h1>Influencers virtuales robandose contenido real</h1>
+
+    <p class="subtitle">Análisis del uso no consentido del contenido de influencers reales y sus consecuencias en la cultura digital y la publicidad.</p>
+
+    <!-- AUTHORS -->
+    <div class="authors-block">
+      <p class="authors-label">Autoría</p>
+      <ul class="authors-list">
+        <li><a href="https://github.com/aylineoff">Ayline Marìn&nbsp;</a><span class="author-sup">1</span></li>
+        <li><a href="https://github.com/catsgugu">Giulia Pepe</a><span class="author-sup">2</span></li>
+        <li><a href="https://github.com/Bastich03">Esteban Petric</a><span class="author-sup">3</span></li>
+        <li><a href="https://github.com/shootingstarcony">Constanza Venegas</a><span class="author-sup">4</span></li>
+      </ul>
+      <div class="affiliations">
+        <p><span class="aff-num">1</span>Estudiante de diseño con Mención V y M - FAU Universidad de Chile — Santiago, Chile</p>
+        <p><span class="aff-num">2</span>Estudiante de diseño con Mención V y M - FAU Universidad de Chile — Santiago, Chile</p>
+        <p><span class="aff-num">3</span>Estudiante de diseño con Mención V y M - FAU Universidad de Chile — Santiago, Chile</p>
+        <p><span class="aff-num">4</span>Estudiante de diseño con Mención V y M - FAU Universidad de Chile — Santiago, Chile</p>
+      </div>
+    </div>
+
+    <!-- META -->
+    <div class="meta-row">
+      <div class="meta-item">Recibido&nbsp;<span>28 de Agosto, 2026</span></div>
+      <div class="meta-item">Aceptado&nbsp;<span>28 de Agosto, 2026</span></div>
+      <div class="meta-item">Publicado&nbsp;<span>Agosto, 2026</span></div>
+      <div class="meta-item">Acceso&nbsp;<span>Abierto</span></div>
+    </div>
+
+  </section>
+
+  <!-- ── RESUMEN ─────────────────────────────────────────────── -->
+  <section id="resumen">
+    <p class="section-label">Resumen</p>
+    <div class="abstract-box">
+      <p><strong>Introducción:</strong> Presenta el problema de los influencers virtuales y cómo la IA puede apropiarse de contenido real, afectando la autoría, visibilidad y reconocimiento.</p>
+      <p style="margin-top:0.9rem;"><strong>Objetivo:</strong> Analizar cómo los influencers virtuales utilizan contenido de creadores reales y qué consecuencias genera esto.</p>
+      <p style="margin-top:0.9rem;"><strong>Métodos:</strong> Compara casos de influencers virtuales con creadores reales y analiza sus métricas de alcance, interacción e ingresos.</p>
+      <p style="margin-top:0.9rem;"><strong>Resultados:</strong> El contenido generado por IA alcanza mayor visibilidad y puede desplazar al contenido original, aunque parte de la audiencia cuestiona esta práctica.</p>
+      <p style="margin-top:0.9rem;"><strong>Conclusión:</strong> La IA puede reproducir contenido y generar desigualdades, ocultando a los autores originales y concentrando reconocimiento y beneficios en quienes controlan la tecnología.</p>
+    </div>
+
+    <div style="margin-top:1.2rem;">
+      <p class="authors-label">Palabras clave</p>
+      <div class="keywords">
+        <span class="keyword">IA</span>
+        <span class="keyword">Data Feminism</span>
+        <span class="keyword">Influencer virtual</span>
+        <span class="keyword">Identidad</span>
+        <span class="keyword">Contenido</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INTRODUCCIÓN ────────────────────────────────────────── -->
+  <section id="introduccion">
+    <p class="section-label">1 · Introducción</p>
+    <div class="body-text">
+      <p>La inteligencia artificial permite crear influencers virtuales capaces de producir imágenes, videos y publicaciones que circulan en las mismas plataformas que el contenido elaborado por personas reales. Esta transformación modifica no solo la forma en que se produce contenido, sino también la relación entre autoría, visibilidad y reconocimiento dentro de las redes sociales.</p>
+      <p>Esta situación plantea una problemática relacionada con la recolección sesgada: si estas entidades y sus cuentas se construyen a partir de grandes cantidades de contenido producido por personas, las decisiones sobre qué materiales se recopilan, cuáles se utilizan y quién recibe reconocimiento por ellos no son neutrales. La selección y transformación de estos datos puede aumentar y posibilitar la visibilidad del contenido artificial, mientras que el contenido real queda invisibilizado, sin créditos y sin beneficios del material y la información.
+</p>
+      <p>La incorporación de este contenido a sistemas de IA plantea cuestionamiento sobre quién controla los datos, quién autoriza su utilización y, especialmente, quién recibe reconocimiento cuando el trabajo creativo de personas reales es transformado en contenido atribuido a una identidad virtual, dejando a los consumidores de aquel contenido con una realidad que oculta las atribuciones originales del contenido y toma sus beneficios consigo mismo.</p>
+      <p>Tomando en cuenta el conocimiento situado de Donna Haraway (1988), ninguna representación puede considerarse completamente neutral, siempre condicionada por la posición desde la cual se produce y por las decisiones que determinan qué se hace visible. Esta perspectiva se relaciona con el <i>Data Feminism</i> de Catherine D'Ignazio y Lauren Klein, que propone analizar críticamente las relaciones de poder presentes en la producción, clasificación y utilización de los datos.</p>
+
+      <p>En este contexto, analizar la relación entre influencers virtuales y contenido producido por creadores reales permite observar cómo las tecnologías de IA pueden modificar las dinámicas de autoría, visibilidad y reconocimiento. El problema no radica únicamente en distinguir entre contenido humano y contenido generado artificialmente, sino en identificar qué trabajos, personas y decisiones quedan ocultos detrás de una identidad que se presenta como autónoma y original.</p>
+    </div>
+  </section>
+
+  <!-- ── MARCO TEÓRICO ───────────────────────────────────────── -->
+  <section id="marco-teorico">
+    <p class="section-label">2 · Marco Teórico</p>
+    
+    <div class="body-text"><p style="margin-bottom:1rem">El contenido producido por personas no entra al ecosistema de IA como un conjunto de datos neutros. Para convertirse en material utilizable debe ser seleccionado, clasificado, extraído y separado de su contexto original.</p>
+    </div>
+
+    
+    <h2>2.1 Conocimiento situado vs. Corporalidad simulada</h2>
+    <div class="body-text">
+      <p>Frente a la pretensión de objetividad o espontaneidad de los avatares digitales, el concepto de conocimiento situado (Haraway, 1988) exige cuestionar desde qué cuerpo, posición social y contexto se habla. Los influencers virtuales simulan habitar identidades, estilos de vida y vivencias, apropiándose de la narrativa de comunidades o creadores humanos específicos, sin asumir los costos sociales ni la vulnerabilidad de un cuerpo real. Esta simulación borra la relación entre la vivencia original y el relato publicado, despojando al sujeto real de la legitimidad de su propia voz.</p>
+    </div>
+
+    <h2>2.2 Data Feminism y relaciones de poder en la captura de crédito y beneficios</h2>
+    <div class="body-text">
+      <p>A partir de los principios de D'Ignazio y Klein en el <i>Data Feminism</i> (2020), la recolección de contenido para alimentar avatares virtuales refleja una asimetría de poder estructural: se extrae la estética, el estilo y el material de creadores humanos (frecuentemente pertenecientes a sectores precarizados de la economía de creadores) para transferir los créditos y rendimientos económicos a las firmas que controlan la tecnología. El "robo" o la apropiación de contenido no es un accidente técnico, sino una dinámica de invisibilización sistemática donde la matriz de datos premia a la representación sintética por sobre la fuerza de trabajo humana que la hizo posible.
+</p>
+    </div>
+
+    <h2>2.3 Narrativa, autenticidad e identidad virtual: La transmutación del contenido y el borrado de la fuente</h2>
+    <div class="body-text">
+      <p>Shrivastava y Gupta (2026) identifican la transparencia, la autenticidad, la manipulación, la apropiación cultural y la representación de identidades como dimensiones centrales de los debates éticos sobre influencers virtuales.
+</p>
+    <div class="body-text">
+</div>
+    <p>A partir de este marco, nuestro análisis desplaza el foco hacia la procedencia del contenido y el trabajo creativo que puede quedar invisibilizado cuando materiales humanos son incorporados a narrativas de identidad artificial.
+</p>
+    </div>
+  </section>
+
+  <!-- ── MÉTODOS ─────────────────────────────────────────────── -->
+  
+  
+  <section id="metodos">
+    <p class="section-label">3 · Métodos</p>
+    
+    <div class="body-text">
+      <p>Realizamos un análisis crítico-visual sobre casos de influencers virtuales generados por inteligencia artificial, tratando el fenómeno como un sistema de apropiación intrínsecamente sesgado. El procedimiento se sustenta en un enfoque de metodologías visuales que plantea que toda imagen debe interrogarse no solo en su composición formal, sino también en las condiciones sociales de su producción y circulación (Martínez Luna, 2022). A partir de este planteamiento, el procedimiento se divide en dos fases analíticas:</p>
+      <ol>
+        <li><strong>Rastreo del Origen Apropiado:</strong> Se utilizará el método de estudio de casos múltiples junto con una demostración comparativa. Se seleccionan casos de influencers virtuales generados por inteligencia artificial y se contrastan con creadores reales que fueron usados como base para la reutilización del contenido. Se rastrea el origen de cada creador original mediante la revisión de publicaciones, la composición fotográfica y los elementos audiovisuales (poses, filtros, edición, tono de voz) que ambos comparten. Este ejercicio comparativo permite establecer indicios de apropiación antes de avanzar hacia un análisis cuantitativo y confirmar la apropiación del contenido de parte del influencer virtual. 
+</li>
+        <li><strong>Revisión de Metricas de Impacto:</strong> Se recopilan y comparan métricas públicas de rendimiento entre los influencers virtuales y los creadores reales identificados: nivel de alcance (seguidores, likes, comentarios, compartidos) y estimaciones de ingresos por publicidad, monetización de contenido dentro de redes sociales y la transformación del público objetivo. Estudios recientes en marketing digital han documentado que los influencers virtuales pueden alcanzar tasas de engagement más altas que los influencers humanos (Kobuszewski Volles et al., 2024), lo que sustenta la necesidad de contrastar prácticamente si esta ventaja se traduce en una apropiación de audiencia y beneficios en desmedro de los creadores reales de quienes toman su estilo. Este cruce de datos permite evaluar si los influencers virtuales reciben una atención y beneficios monetarios desproporcionados en comparación con los creadores de quienes se apropian, y examinar las reacciones de la audiencia (comentarios, debates públicos, señalamientos de plagio) frente a la existencia del avatar.</li>
+      </ol>
+    </div>
+
+    <figure>
+       <img src="chart_1.webp" alt="Figura Métodos 2" style="width:100%;border-radius:4px;" />
+      <figcaption><strong>Figura 1.</strong> Mapa térmico de Estados Unidos que representa los puntajes del índice de gerrymandering para el 113º Congreso (2013-2015). </figcaption>
+    </figure>
+  
+    <figure>
+      <img src="chart_2.webp" alt="Figura Métodos 2" style="width:100%;border-radius:4px;" />
+      <figcaption><strong>Figura 2.</strong> Mapas electorales de Wisconsin para las elecciones de la Asamblea Estatal de 2008, 2010 y 2012.</figcaption>
+    </figure>
+  </section>
+  
+  
+
+  <!-- ── RESULTADOS ──────────────────────────────────────────── -->
+  <section id="resultados">
+    <p class="section-label">4 · Resultados</p>
+    <div class="body-text">
+      <p>Lo evidenciado determina una diferencia entre el alcance perteneciente a los creadores de contenido original de los generados virtualmente por IA. El contenido original permanece con menos alcance e interacciones y por su contraparte el contenido robado es superior en las estadísticas, esto debido a que se puede producir la copia del contenido en masa ya que no existe el proceso previo de planificación del contenido natural que conlleva una diferencia de tiempo entre cada publicación, de modo que el contenido replicado puede ser publicado de manera constante y en mayor cantidad, ayudando a que el algoritmo pueda premiar indiscriminadamente aquellos perfiles que sean más “activos” en redes sociales.</p>
+      <p>Se observa una dualidad en cuanto a las respuestas que atrae el contenido de los influencers virtuales, mostrando una audiencia que disfruta y consume este material, ya sea por la ingenuidad y/o ignorancia acerca de la realidad, de que el influencer no es una persona real con su propio contenido o que elige ignorar a propósito, directamente, apoyando a la generación del contenido por parte de la IA sin cuestionar los principios ni la ética detrás del proceso; por otro lado, se constata de la presencia de un porcentaje de la audiencia que, en forma de advertencias o llamados de atención, exponen y evidencian el reemplazo del contenido original de los influencers virtuales que se apropian del movimiento, gestualidad y, generalmente, el contenido en su totalidad.
+</p>
+     
+      <figure>
+    </figure>
+      
+ </div>
+    
+     <figure>
+        <img src="https://github.com/shootingstarcony/img_pag/blob/main/Creaci%C3%B3n%20de%20Influencer%20virtual.jpg?raw=true" alt="Gráfico Visual" style="width:100%;border-radius:4px;" />
+      <figcaption><strong></strong>Cause and Effect Diaggram que explica sobre el proceso de creación de influencer IA y como utiliza el material real hasta llegar al conflicto del beneficio de contenido no correspondiente.</figcaption>
+    </figure>
+    
+     <div class="body-text">
+    </div>
+    
+  
+  </section>
+
+  <!-- ── CONCLUSIÓN ──────────────────────────────────────────── -->
+  <section id="conclusion">
+    <p class="section-label">5 · Conclusiones</p>
+    <div class="body-text">
+      <p>La aparición de influencers virtuales generados por inteligencia artificial evidencia nuevas problemáticas en torno a la autoría, la visibilidad y el reconocimiento del trabajo creativo. Al utilizar grandes cantidades de contenido producido por personas reales, la IA puede reproducir estilos y representaciones al punto de construir una identidad cuyos orígenes quedan invisibilizados, mientras los beneficios se concentran en quienes controlan estas tecnologías. Esto plantea interrogantes sobre quiénes participan realmente en la construcción de estas identidades y hasta qué punto sus aportes son reconocidos dentro de las plataformas digitales.
+</p>
+      <p>Desde el <i>conocimiento situado</i> de Haraway y el <i>Data Feminism</i> de D’Ignazio y Klein, se entiende que estos procesos no son neutrales, sino que están atravesados por relaciones de poder. Por ello, más que diferenciar entre contenido humano y artificial, es necesario cuestionar qué trabajos y autores quedan ocultos detrás de estas identidades virtuales y quién termina recibiendo el reconocimiento y los beneficios de su producción. Esta perspectiva permite comprender que la tecnología no funciona de manera aislada, sino dentro de sistemas sociales y económicos que determinan qué contenidos adquieren mayor visibilidad y valor.
+</p>
+      <p>En este sentido, el análisis de casos y sus métricas permite observar cómo la inteligencia artificial no solo transforma la manera de producir y consumir contenido, sino también las dinámicas de reconocimiento dentro de las plataformas digitales. Comparar a los influencers virtuales con los creadores reales permite visibilizar posibles desigualdades en alcance, engagement y beneficios económicos. Así, estudiar este fenómeno resulta relevante para comprender cómo las nuevas tecnologías están modificando las formas de producción, representación y reconocimiento en el entorno digital, y la necesidad de desarrollar una mirada crítica frente a estas transformaciones.
+
+</p>
+    </div>
+  </section>
+
+  <!-- ── REFERENCIAS ─────────────────────────────────────────── -->
+  <section id="referencias">
+    <p class="section-label">Referencias Bibliográficas</p>
+    <ul class="references-list">
+      <li>Kobuszewski Volles, B., Park, J., Van Kerckhove, A., & Geuens, M. (2024). How and when do virtual influencers positively affect consumer responses to endorsed brands? Journal of Business Research, 183, Artículo 114863. https://doi.org/10.1016/j.jbusres.2024.114863 </li>
+      <li>Martínez Luna, S. (2022). Imágenes en circulación. Una aproximación a la cultura visual digital desde la crisis de la especificidad del medio fotográfico. Kepes, 19(26), 317–348. https://doi.org/10.17151/kepes.2022.19.26.10 </li>
+      <li>Cairo, A. (2020). How charts lie: Getting smarter about visual information. W. W. Norton & Company.</li>
+      <li>D’Ignazio, C., y Klein, L. F. (2023). Data feminism. MIT Press.</li>
+      <li>Floridi, L. (2011). The Philosophy of Information. Oxford University Press.</li>
+      <li>Haraway, D. (1988). Situated Knowledges: The Science Question in Feminism and the Privilege of Partial Perspective. Feminist Studies.</li>
+      <li>Hussain, A., Narula, A., Singh, G., Sinha, M., Raj, R., &amp; Nandal, N. (2026). Virtual influencers in digital marketing: A PRISMA-based systematic literature review and thematic synthesis of engagement, trust, and ethical challenges. Future Business Journal, 12, 210.</li>
+    </ul>
+  </section>
+  
+  
+ <!-- ── DECLARACIONES ───────────────────────────────────────── -->
+  <section>
+    <p class="section-label">Declaraciones</p>
+
+    <div class="correspondence">
+      <strong>Correspondencia</strong>
+      Esteban Petric · Estudiante de diseño con Mención V y M, Santiago, Chile · <a href="bastian.petric@ug.uchile.cl">bastian.petric@ug.uchile.cl</a>
+    </div>
+
+    <div class="disclosure" style="margin-top:1.5rem;">
+      <p><strong>Conflicto de intereses</strong> Los autores declaran no tener conflictos de interés, solo una profunda estima por el equipo docente; no obstante, son plenamente conscientes de que dicha estima no constituye una variable computable en la rúbrica de evaluación, la cual se rige por criterios objetivos.</p>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p> Influencers virtuales robandose contenido real et al. Esteban Petric es publicado bajo licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></p> 
+  </div>
+</footer>
+
+</body>
+</html>
